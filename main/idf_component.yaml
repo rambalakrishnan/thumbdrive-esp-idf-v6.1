@@ -1,2 +1,21 @@
+## IDF Component Manager Manifest File
+##
+# CHANGELOG
+# ---------------------------------------------------------------------------
+# [v2.x-api-migration] 2026-08-18  s.ram.balakrishnan@gmail.com
+#   - Updated espressif/esp_tinyusb dependency from ^1.4.0 (v1.7.6) to
+#     ^2.2.1 (v2.2.1).
+#   - Reason: esp_tinyusb v1.7.6 is incompatible with ESP-IDF v6.1 due to
+#     the esp_vfs_fat_register() signature change (4 args → 2 args in
+#     ESP-IDF v6.1).  v2.x uses the new esp_vfs_fat_register_cfg() API.
+#   - NOTE: This file (.yaml) is NOT read by the ESP-IDF v6.1 build system,
+#     which expects "idf_component.yml" (.yml extension).  It is kept here
+#     for documentation and tooling that may reference either extension.
+##
 dependencies:
-  espressif/esp_tinyusb: "^1.4.0"
+  ## Required IDF version
+  idf:
+    version: '>=5.0'
+  # v2.x provides the tinyusb_msc.h API used by main.c and is
+  # built against the ESP-IDF v6.x esp_vfs_fat_register_cfg() API.
+  espressif/esp_tinyusb: ^2.2.1

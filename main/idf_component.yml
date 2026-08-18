@@ -1,17 +1,22 @@
 ## IDF Component Manager Manifest File
+##
+# CHANGELOG
+# ---------------------------------------------------------------------------
+# [v6.1-beta1-migration] 2026-08-18  s.ram.balakrishnan@gmail.com
+#   - Bumped espressif/esp_tinyusb requirement from ^1.4.0 (resolves to
+#     v1.7.6) to ^2.2.1 (resolves to v2.2.1, the latest 2.x release).
+#   - Rationale: esp_tinyusb v1.7.6 calls the legacy 4-argument
+#     `esp_vfs_fat_register(base_path, fat_drive, max_files, &fs)`,
+#     which was replaced in ESP-IDF v6.1 by a 2-argument
+#     `esp_vfs_fat_register(const esp_vfs_fat_conf_t *conf, void *out_fs)`.
+#     This is a hard API break — the v1.7.6 component simply will not
+#     compile against ESP-IDF v6.1.
+#   - v2.x is the API generation targeted by the official ESP-IDF v6.1
+#     example at examples/peripherals/usb/device/tusb_msc, which depends
+#     on espressif/esp_tinyusb ^2.0.1~1.
+##
 dependencies:
   ## Required IDF version
   idf:
-    version: '>=4.1.0'
-  # # Put list of dependencies here
-  # # For components maintained by Espressif:
-  # component: "~1.0.0"
-  # # For 3rd party components:
-  # username/component: ">=1.0.0,<2.0.0"
-  # username2/component2:
-  #   version: "~1.0.0"
-  #   # For transient dependencies `public` flag can be set.
-  #   # `public` flag doesn't have an effect dependencies of the `main` component.
-  #   # All dependencies of `main` are public by default.
-  #   # public: true
-  espressif/esp_tinyusb: ^1.4.0
+    version: '>=5.0'
+  espressif/esp_tinyusb: ^2.2.1
