@@ -1,3 +1,21 @@
+# ===========================================================================
+# CHANGELOG
+# ---------------------------------------------------------------------------
+# [v6.1-beta1-migration] 2026-08-18  s.ram.balakrishnan@gmail.com
+#   - Added CONFIG_TINYUSB_MSC_ENABLED=y.  Without this, the MSC class is
+#     compiled out entirely (CFG_TUD_MSC defaults to 0) and the device will
+#     not enumerate as a USB Mass Storage device on the host.
+#   - Added CONFIG_TINYUSB_MSC_MOUNT_PATH="/data" to make the mount path
+#     explicit (matches the Kconfig default and the value used in main.c).
+#   - Added CONFIG_TINYUSB_MSC_BUFSIZE=4096 to match the wear-levelling
+#     sector size (CONFIG_WL_SECTOR_SIZE=4096).  The v1.7.6 backend
+#     requires CONFIG_TINYUSB_MSC_BUFSIZE >= CONFIG_WL_SECTOR_SIZE at
+#     runtime in tinyusb_msc_storage_init_spiflash(); if the buffer is
+#     smaller, the init fails with ESP_ERR_NOT_SUPPORTED.  A 4096-byte
+#     buffer also improves transfer throughput compared to the 512-byte
+#     default.
+# ===========================================================================
+
 CONFIG_IDF_TARGET="esp32s3"
 CONFIG_COMPILER_OPTIMIZATION_SIZE=y
 CONFIG_LOG_DEFAULT_LEVEL_NONE=y
@@ -5,3 +23,6 @@ CONFIG_BOOTLOADER_LOG_LEVEL_NONE=y
 CONFIG_ESP_WIFI_ENABLED=n
 CONFIG_BT_ENABLED=n
 CONFIG_LIBC_PICOLIBC=y
+CONFIG_TINYUSB_MSC_ENABLED=y
+CONFIG_TINYUSB_MSC_MOUNT_PATH="/data"
+CONFIG_TINYUSB_MSC_BUFSIZE=4096
