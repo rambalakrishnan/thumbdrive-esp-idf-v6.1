@@ -1,0 +1,25 @@
+# ESP-IDF build artifacts
+/build/
+/build-*
+/build.log
+
+# Generated SDK config (use sdkconfig.defaults as the source of truth)
+/sdkconfig
+
+# ESP-IDF managed components (auto-downloaded, never commit)
+/managed_components/
+
+# IDE / editor files
+/.vscode/
+/.idea/
+*.swp
+*.swo
+*~
+*.DS_Store
+
+# CMake generated files
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/install_export.cmake
+```
