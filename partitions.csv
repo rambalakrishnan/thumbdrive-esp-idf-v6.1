@@ -1,5 +1,34 @@
-# Name,     Type,  SubType,  Offset,   Size,     Flags
-nvs,        data,  nvs,      0x9000,   0x4000,
-phy_init,   data,  phy,      0xd000,   0x1000,
-factory,    app,   factory,  0xe000,   0x60000,  
-storage,    data,  fat,      0x6e000,  0xF9A000,
+# ======================================================================================
+# CHANGELOG
+# --------------------------------------------------------------------------------------
+# [n16r8-16mb-flash] 2026-08-18  s.ram.balakrishnan@gmail.com
+#   - Changed factory partition from 0x60000 (384 KB) to 0x30000 (192 KB).
+#     The compiled firmware binary is 0x2f840 = 194,624 bytes (~190 KB).
+#     192 KB = 196,608 bytes gives 1,984 bytes of headroom.  The user chose
+#     this trade-off to maximise the USB mass-storage partition on the 16 MB
+#     N16R8 module.  If future code changes exceed 192 KB, the factory
+#     partition can be grown -- storage starts at 0x10000 + 0x30000 = 0x40000.
+#
+#   - MOVED factory partition offset from 0xe000 to 0x10000.
+#     ESP-IDF's gen_esp32part.py requires APP-type partitions to be aligned
+#     to 0x10000 (64 KB).  The old offset (0xe000) is NOT 64 KB-aligned and
+#     causes: "Partition factory invalid: Offset 0xe000 is not aligned to
+#     0x10000".  The 8 KB gap (0xe000-0x10000) is unused flash -- acceptable
+#     waste for a 16 MB device.
+#
+#   - Changed storage partition from 0xf9a000 to 0xfc0000.
+#     Previous value (0xf9a000) was from the IDF example, designed for a
+#     larger flash.  With factory at 0x10000 + 0x30000:
+#       storage_offset = 0x40000,  storage_size = 0x1000000 - 0x40000 = 0xfc0000
+#     0xfc0000 = 16,515,072 bytes = ~15.75 MB.  Ends exactly at 0x1000000.  ?
+#
+#   - NVS partition (0x4000 = 16 KB) retained at 0x9000.  ESP-IDF convention
+#     requires at least one data partition for nvs_flash; removing it can cause
+#     boot-time warnings from the bootloader.  Kept per user instruction.
+# ======================================================================================
+
+# Name,     Type,  SubType,  Offset,    Size,    Flags
+nvs,        data,  nvs,      0x9000,    0x4000,
+phy_init,   data,  phy,      0xd000,    0x1000,
+factory,    app,   factory,  0x10000,   0x30000,
+storage,    data,  fat,      0x40000,   0xfc0000,
